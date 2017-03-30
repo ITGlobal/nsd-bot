@@ -1,15 +1,23 @@
 using System;
 using System.Diagnostics;
+using System.Linq;
+using System.Runtime.Serialization;
 using System.Xml;
+using System.Xml.Linq;
+using System.Xml.Serialization;
+using System.Xml.XPath;
+using NSD.Bot.Dialogs;
+using NSD.Bot.StateMachine;
 
 namespace NSD.Bot {
     /// <remarks>
-/// This class implements a table-driven finite state machine.
-/// The table is defined by an XML document. The System.Xml.XmlTextReader 
-/// class is used for fast scanning of the table and allows larger tables 
-/// to be used as opposed to System.Xml.XmlDocument.
-/// </remarks>
-	class XMLStateMachine {
+    /// This class implements a table-driven finite state machine.
+    /// The table is defined by an XML document. The System.Xml.XmlTextReader 
+    /// class is used for fast scanning of the table and allows larger tables 
+    /// to be used as opposed to System.Xml.XmlDocument.
+    /// </remarks>
+    [Serializable]
+	public class XMLStateMachine {
 		public XMLStateMachine() {
 			tableParser = null;
 			stateCurrent = String.Empty;
@@ -31,7 +39,7 @@ namespace NSD.Bot {
 
 /// <summary>
 /// The Answer property contains a user-defined string
-/// that indicates an _answer to be performed on the current transition.
+/// that indicates an _answer to be performed on the current option.
 /// </summary>
 		public string Answer {
 			get {
@@ -55,7 +63,7 @@ namespace NSD.Bot {
 /// The Next method gets the next valid state given
 /// the current state and the supplied input.
 /// </summary>
-/// <param name="inputArg">The input used to trigger a state transition.</param>
+/// <param name="inputArg">The input used to trigger a state option.</param>
 /// <returns>A string that identifies the next state</returns>
 		public string Next(string inputArg) {
 			string nextState = String.Empty;
@@ -69,16 +77,17 @@ namespace NSD.Bot {
 							if ( true == tableParser.HasAttributes ) {
 								string state = tableParser.GetAttribute("name");
 								if ( state == CurrentState ) {
-									// Get transition data
+									// Get option data
 									while ( true == tableParser.Read() ) {
-										if ( ( XmlNodeType.Element == tableParser.NodeType ) && ("transition" == tableParser.Name) ) {
+										if ( ( XmlNodeType.Element == tableParser.NodeType ) && ("option" == tableParser.Name) ) {
 											if ( true == tableParser.HasAttributes ) {
 												string input = tableParser.GetAttribute("input");
 												if ( input == inputArg ) {
 													CurrentState = tableParser.GetAttribute("next");
 													nextState = CurrentState;
-													_answer = tableParser.GetAttribute("_answer");
-													return nextState;
+													_answer = tableParser.GetAttribute("answer");
+                                                    FanceName = tableParser.GetAttribute("fancyName");
+                                                    return nextState;
 												}
 											}
 										}
@@ -109,9 +118,25 @@ namespace NSD.Bot {
 			return nextState;
 		}
 
+        public Prompt GetPrompt()
+        {
+            var xml = XDocument.Load(StateTable);
+            var state = xml.XPathSelectElement($"//state[@name='{CurrentState}']");
+            var options = state.XPathSelectElements("option")
+                .Select(x => new Option(
+                    x.Attribute("input").Value,
+                    x.Attribute("fancyName").Value,
+                    x.Attribute("anwser")?.Value)
+                );
+            return new Prompt(state.Attribute("prompt").Value, options.ToArray());
+        }
+
+        [NonSerialized]
 		private XmlTextReader tableParser;
+
 		private string stateCurrent;
 		private string stateTable;
 		private string _answer;
-	}
+        public string FanceName { get; private set; }
+    }
 }

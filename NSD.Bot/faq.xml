@@ -2,30 +2,15 @@
 
 <fsm name="Vending Machine">
   <states>
-    <state name="start">
-      <transition input="nickel" next="five" />
-      <transition input="dime" next="ten" />
-      <transition input="quarter" next="start" action="dispense" />
+    <state name="start" prompt="Чем помочь?">
+      <option input="cs" next="csProblem" fancyName="Не работает крипто-сервис" />
+      <option input="wb" next="start" fancyName="Не могу зайти в веб-кабинет" answer="Напишите на soed@nsd.ru!" />
+      <option input="nothing" next="start" fancyName="Ничем" answer="Хорошего дня!" />
     </state>
-    <state name="five">
-      <transition input="nickel" next="ten" />
-      <transition input="dime" next="fifteen" />
-      <transition input="quarter" next="start" action="dispense" />
-    </state>
-    <state name="ten">
-      <transition input="nickel" next="fifteen" />
-      <transition input="dime" next="twenty" />
-      <transition input="quarter" next="start" action="dispense" />
-    </state>
-    <state name="fifteen">
-      <transition input="nickel" next="twenty" />
-      <transition input="dime" next="start" action="dispense" />
-      <transition input="quarter" next="start" action="dispense" />
-    </state>
-    <state name="twenty">
-      <transition input="nickel" next="start" action="dispense" />
-      <transition input="dime" next="start" action="dispense" />
-      <transition input="quarter" next="start" action="dispense" />
+    <state name="csProblem" prompt="Что случилось?">
+      <option input="sign" fancyName="Не могу подписать файл" next="start" answer="Установите справочник сертификатов" />
+      <option input="install" fancyName="Не могу установить" next="start" answer="Убедитесь, что компьютер включен" />
+      <option input="start" fancyName="Не запускается" next="start" answer="Пришлите логи" />
     </state>
   </states>
 </fsm>

@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" ?>
+
+<fsm name="Test Machine">
+  <states>
+    <state name="start" prompt="the prompt">
+      <option input="goToNextState" next="nextState" fancyName="go to the next state" />
+      <option input="giveAnswer" next="start" fancyName="give an answer" answer="the answer" />
+    </state>
+    <state name="nextState">
+    </state>
+  </states>
+</fsm>
