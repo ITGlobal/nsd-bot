@@ -65,9 +65,7 @@ namespace NSD.Bot {
 /// </summary>
 /// <param name="inputArg">The input used to trigger a state option.</param>
 /// <returns>A string that identifies the next state</returns>
-		public string Next(string inputArg) {
-			string nextState = String.Empty;
-
+		public bool Next(string inputArg) {
 			if ( CurrentState != String.Empty ) {
 				try {
 					tableParser = new XmlTextReader(StateTable);
@@ -84,10 +82,8 @@ namespace NSD.Bot {
 												string input = tableParser.GetAttribute("input");
 												if ( input == inputArg ) {
 													CurrentState = tableParser.GetAttribute("next");
-													nextState = CurrentState;
 													_answer = tableParser.GetAttribute("answer");
-                                                    FanceName = tableParser.GetAttribute("fancyName");
-                                                    return nextState;
+                                                    return true;
 												}
 											}
 										}
@@ -115,7 +111,7 @@ namespace NSD.Bot {
 				}
 			}
 
-			return nextState;
+			return false;
 		}
 
         public Prompt GetPrompt()
@@ -125,7 +121,6 @@ namespace NSD.Bot {
             var options = state.XPathSelectElements("option")
                 .Select(x => new Option(
                     x.Attribute("input").Value,
-                    x.Attribute("fancyName").Value,
                     x.Attribute("anwser")?.Value)
                 );
             return new Prompt(state.Attribute("prompt").Value, options.ToArray());
@@ -137,6 +132,5 @@ namespace NSD.Bot {
 		private string stateCurrent;
 		private string stateTable;
 		private string _answer;
-        public string FanceName { get; private set; }
     }
 }

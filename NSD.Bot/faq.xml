@@ -3,14 +3,14 @@
 <fsm name="Vending Machine">
   <states>
     <state name="start" prompt="Чем помочь?">
-      <option input="cs" next="csProblem" fancyName="Не работает крипто-сервис" />
-      <option input="wb" next="start" fancyName="Не могу зайти в веб-кабинет" answer="Напишите на soed@nsd.ru!" />
-      <option input="nothing" next="start" fancyName="Ничем" answer="Хорошего дня!" />
+      <option next="csProblem" input="Не работает крипто-сервис" />
+      <option next="start" input="Не могу зайти в веб-кабинет" answer="Напишите на soed@nsd.ru!" />
+      <option next="start" input="Ничем" answer="Хорошего дня!" />
     </state>
     <state name="csProblem" prompt="Что случилось?">
-      <option input="sign" fancyName="Не могу подписать файл" next="start" answer="Установите справочник сертификатов" />
-      <option input="install" fancyName="Не могу установить" next="start" answer="Убедитесь, что компьютер включен" />
-      <option input="start" fancyName="Не запускается" next="start" answer="Пришлите логи" />
+      <option input="Не могу подписать файл" next="start" answer="Установите справочник сертификатов" />
+      <option input="Не могу установить" next="start" answer="Убедитесь, что компьютер включен" />
+      <option input="Не запускается" next="start" answer="Пришлите логи" />
     </state>
   </states>
 </fsm>

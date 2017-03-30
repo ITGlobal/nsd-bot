@@ -10,8 +10,8 @@ namespace NSD.Bot.Test
     [TestFixture]
     public class StateMachineTest
     {
-        [TestCase("start", "goToNextState", "nextState")]
-        [TestCase("start", "giveAnswer", "start")]
+        [TestCase("start", "next state", "nextState")]
+        [TestCase("start", "give answer", "start")]
         public void Next_Test(string currentState, string input, string nextState)
         {
             var sm = new XMLStateMachine

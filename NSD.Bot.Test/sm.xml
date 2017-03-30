@@ -3,8 +3,8 @@
 <fsm name="Test Machine">
   <states>
     <state name="start" prompt="the prompt">
-      <option input="goToNextState" next="nextState" fancyName="go to the next state" />
-      <option input="giveAnswer" next="start" fancyName="give an answer" answer="the answer" />
+      <option next="nextState" input="next state" />
+      <option next="start" input="give answer" answer="the answer" />
     </state>
     <state name="nextState">
     </state>
