@@ -96,7 +96,7 @@ namespace NSD.Bot.Dialogs
             var response = client.Execute<dynamic>(request);
             dynamic answer = response.Data["answers"][0];
             var score = answer["score"];
-            var ret = score < 45 ? "Не могу ответить на вопрос. Обратитесь в soed@nsd.ru" : answer["answer"];
+            var ret = score < 45 ? embeddedAnswers.notFound : answer["answer"];
             return $"{ret}\n(Инфа {score}%)";
         }
 

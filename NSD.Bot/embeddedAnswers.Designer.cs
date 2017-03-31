@@ -83,6 +83,15 @@ namespace NSD.Bot {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Не могу ответить на вопрос. Попробуйте найти ответ по категориям (команда &quot;меню&quot;) или обратитесь в soed@nsd.ru.
+        /// </summary>
+        internal static string notFound {
+            get {
+                return ResourceManager.GetString("notFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Спасибо за обращение! Вы можете задать новый вопрос в свободной форме или наберите команду &quot;меню&quot;, чтобы найти ответ по категориям..
         /// </summary>
         internal static string thank {
