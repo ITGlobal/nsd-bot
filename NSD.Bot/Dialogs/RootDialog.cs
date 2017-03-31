@@ -107,22 +107,4 @@ namespace NSD.Bot.Dialogs
             await context.PostAsync(reply);
         }
     }
-
-    [Serializable]
-    public class Option
-    {
-        public string Input { get; }
-        public string Answer { get; }
-
-        public Option(string input, string answer)
-        {
-            Input = input;
-            Answer = answer;
-        }
-
-        public override string ToString()
-        {
-            return Input;
-        }
-    }
 }

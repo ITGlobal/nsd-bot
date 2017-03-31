@@ -115,14 +115,12 @@
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="StateMachine\XMLStateMachine.xml">
-      <SubType>Designer</SubType>
-    </Content>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\MessagesController.cs" />
     <Compile Include="Dialogs\IntroDialog.cs" />
+    <Compile Include="StateMachine\Option.cs" />
     <Compile Include="Dialogs\RootDialog.cs" />
     <Compile Include="embeddedAnswers.Designer.cs">
       <AutoGen>True</AutoGen>
