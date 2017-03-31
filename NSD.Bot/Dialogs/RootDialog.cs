@@ -24,49 +24,67 @@ namespace NSD.Bot.Dialogs
 
         public Task StartAsync(IDialogContext context)
         {
-            context.Wait(MessageReceivedAsync);
-            return Task.CompletedTask;
-        }
-
-        private async Task MessageReceivedAsync(IDialogContext context, IAwaitable<object> result)
-        {
-            var activity = await result as Activity;
-            Trace.TraceInformation(activity.Text);
-            await context.PostAsync("Привет!");
-            ShowPromt(context, Sm.GetPrompt(), activity);
             context.Wait(AfterInput);
+            return Task.CompletedTask;
         }
 
         public async Task AfterInput(IDialogContext context, IAwaitable<IMessageActivity> argument)
         {
-            Trace.TraceInformation(nameof(AfterInput));
+            var activity = (Activity) await argument;
+            var input = activity.Text.Trim().ToLowerInvariant();
 
-            var activity = await argument;
-            var result = Sm.Next(activity.Text);
-
-            if (result)
+            if (input == "помощь")
             {
-                Trace.TraceInformation($"result {activity.Text}");
+                await context.PostAsync(embeddedAnswers.help);
+                return;
+            }
 
+            if (input == "меню")
+            {
+                Sm.CurrentState = "start";
+                ShowPromt(context, Sm.GetPrompt(), activity);
+                context.Wait(AfterInput);
+                return;
+            }
+
+            if (input == "сбросить")
+            {
+                await Done(context);
+                return;
+            }
+
+            if (activity.Text.Trim().EndsWith("?")) // задал вопрос
+            {
+                await context.PostAsync(Search(((IMessageActivity)context.Activity).Text));
+                await Done(context);
+            }
+            else if (Sm.Next(activity.Text)) // нажал кнопку
+            {
                 if (string.IsNullOrEmpty(Sm.Answer))
                 {
-                    ShowPromt(context, Sm.GetPrompt(), activity as Activity);
+                    ShowPromt(context, Sm.GetPrompt(), activity);
                     context.Wait(AfterInput);
-                    return;
                 }
-                await context.PostAsync(Sm.Answer);
-                context.Done<object>(null);
+                else
+                {
+                    await context.PostAsync(Sm.Answer);
+                    await Done(context);
+                }
             }
-            else
+            else // написал ерунду
             {
-                Trace.TraceInformation($"false {activity.Text}");
-
-                await context.PostAsync(Search(((IMessageActivity)context.Activity).Text));
-                context.Done<object>(null);
+                await context.PostAsync(embeddedAnswers.help);
+                context.Wait(AfterInput);
             }
         }
 
-        private string Search(string input)
+        private static async Task Done(IDialogContext context)
+        {
+            await context.PostAsync(embeddedAnswers.thank);
+            context.Done<object>(null);
+        }
+
+        private static string Search(string input)
         {
             var client = new RestClient("https://westus.api.cognitive.microsoft.com/qnamaker/v2.0");
             var request = new RestRequest("/knowledgebases/8619aa1d-fe00-4a68-9ffc-0a2a8979bc29/generateAnswer", Method.POST);

@@ -1,9 +1,12 @@
-﻿using System.Net;
+﻿using System;
+using System.Diagnostics;
+using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
 using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Bot.Connector;
+using Microsoft.Rest;
 
 namespace NSD.Bot
 {
@@ -16,15 +19,28 @@ namespace NSD.Bot
         /// </summary>
         public async Task<HttpResponseMessage> Post([FromBody]Activity activity)
         {
-            if (activity.Type == ActivityTypes.Message)
-            {
-                await Conversation.SendAsync(activity, () => new Dialogs.RootDialog());
-            }
-            else
-            {
-                HandleSystemMessage(activity);
-            }
             var response = Request.CreateResponse(HttpStatusCode.OK);
+            try
+            {
+                if (activity.Type == ActivityTypes.Message)
+                {
+                    await Conversation.SendAsync(activity, () => new Dialogs.IntroDialog());
+                }
+                else
+                {
+                    HandleSystemMessage(activity);
+                }
+                return response;
+            }
+            catch (HttpOperationException)
+            {
+                // ignore
+            }
+            catch (Exception e)
+            {
+                Trace.TraceError(e.ToString());
+                throw;
+            }
             return response;
         }
 

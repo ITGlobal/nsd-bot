@@ -3,14 +3,20 @@
 <fsm name="Vending Machine">
   <states>
     <state name="start" prompt="Чем помочь?">
-      <option next="csProblem" input="Не работает крипто-сервис" />
+      <option next="cs" input="Не работает крипто-сервис" />
       <option next="start" input="Не могу зайти в веб-кабинет" answer="Напишите на soed@nsd.ru!" />
       <option next="start" input="Ничем" answer="Хорошего дня!" />
     </state>
-    <state name="csProblem" prompt="Что случилось?">
-      <option input="Не могу подписать файл" next="start" answer="Установите справочник сертификатов" />
+    <state name="cs" prompt="Что случилось?">
+      <option input="Не могу подписать файл" next="cs_1" />
       <option input="Не могу установить" next="start" answer="Убедитесь, что компьютер включен" />
       <option input="Не запускается" next="start" answer="Пришлите логи" />
+      <option next="start" input="Назад" />
+    </state>
+    <state name="cs_1" prompt="Какой тип шифрования?">
+      <option input="RSA" next="start" answer="Вот вам ссылка на RSAшный справочник сертификатов" />
+      <option input="ГОСТ" next="start" answer="Вот вам ссылка на ГОСТовый справочник сертификатов и Validata CSP" />
+      <option next="cs" input="Назад" />
     </state>
   </states>
 </fsm>
