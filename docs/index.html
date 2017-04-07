@@ -2,22 +2,23 @@
 <html>
 <head>
     <meta charset="utf-8" />
-    <title>Привет</title>
+    <title>BotFramework :: Web Chat</title>
     <link href="styles.css" rel="stylesheet" />
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
 </head>
 <body>
 <div>
     <div class="main">
-        <iframe src='http://repository.nsd.ru/'></iframe>
+        <iframe src='https://nsd.ru/ru/'></iframe>
     </div>
     <div class="chat-window" style="display: none">
-        <div class="chat-window-close">
+        <div class="chat-window-close" title="Закрыть диалог">
             <i class="fa fa-times" aria-hidden="true"></i>
         </div>
         <iframe src='https://webchat.botframework.com/embed/NSDBot?s=ln5oV-CBj_Q.cwA.tPI.AdvpqFjbidhaiqJ_z7pDDyMjBMTYhTibHaXDelaqH5g'></iframe>
     </div>
-    <div class="chat-icon" style="display: none">
+    <div class="chat-icon" style="display: none" title="Начать диалог с оператором">
+        <i class="fa fa-commenting-o fa-fw" aria-hidden="true"></i>
     </div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>

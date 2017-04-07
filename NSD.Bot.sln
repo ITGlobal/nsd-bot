@@ -9,7 +9,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NSD.Bot.Test", "NSD.Bot.Tes
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "website", "website", "{C5B50E18-7548-4F67-9EC4-70A4504FCD01}"
 	ProjectSection(SolutionItems) = preProject
-		docs\bot.png = docs\bot.png
 		docs\index.html = docs\index.html
 		docs\scripts.js = docs\scripts.js
 		docs\styles.css = docs\styles.css
