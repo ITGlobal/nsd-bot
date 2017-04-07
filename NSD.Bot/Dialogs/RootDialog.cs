@@ -30,10 +30,10 @@ namespace NSD.Bot.Dialogs
 
         public async Task AfterInput(IDialogContext context, IAwaitable<IMessageActivity> argument)
         {
-            var activity = (Activity) await argument;
+            var activity = (Activity)await argument;
             var input = activity.Text.Trim().ToLowerInvariant();
 
-            if (input == "помощь")
+            if (input == "помощь" || input == "помощь")
             {
                 await context.PostAsync(embeddedAnswers.help);
                 return;
@@ -53,12 +53,8 @@ namespace NSD.Bot.Dialogs
                 return;
             }
 
-            if (activity.Text.Trim().EndsWith("?")) // задал вопрос
-            {
-                await context.PostAsync(Search(((IMessageActivity)context.Activity).Text));
-                await Done(context);
-            }
-            else if (Sm.Next(activity.Text)) // нажал кнопку
+            // если нажал кнопку
+            if (Sm.Next(activity.Text))
             {
                 if (string.IsNullOrEmpty(Sm.Answer))
                 {
@@ -70,12 +66,12 @@ namespace NSD.Bot.Dialogs
                     await context.PostAsync(Sm.Answer);
                     await Done(context);
                 }
+                return;
             }
-            else // написал ерунду
-            {
-                await context.PostAsync(embeddedAnswers.help);
-                context.Wait(AfterInput);
-            }
+
+            // выполнить полнотекстовый поиск
+            await context.PostAsync(Search(((IMessageActivity)context.Activity).Text));
+            await Done(context);
         }
 
         private static async Task Done(IDialogContext context)

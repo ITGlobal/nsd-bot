@@ -3,7 +3,7 @@ $(() => {
     var chatWindow = $('.chat-window');
     var chatWindowClose = $('.chat-window-close', chatWindow);
 
-    chatIcon.delay(2000).fadeIn();
+    chatIcon.delay(500).fadeIn();
 
     chatIcon.on('click', () => {
         chatIcon.hide();
