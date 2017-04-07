@@ -1,11 +1,19 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26228.10
+VisualStudioVersion = 15.0.26403.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NSD.Bot", "NSD.Bot\NSD.Bot.csproj", "{A8BA1066-5695-4D71-ABB4-65E5A5E0C3D4}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NSD.Bot.Test", "NSD.Bot.Test\NSD.Bot.Test.csproj", "{BE3FCB67-26DF-4B58-B8BC-0DD6887819D8}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "website", "website", "{C5B50E18-7548-4F67-9EC4-70A4504FCD01}"
+	ProjectSection(SolutionItems) = preProject
+		docs\bot.png = docs\bot.png
+		docs\index.html = docs\index.html
+		docs\scripts.js = docs\scripts.js
+		docs\styles.css = docs\styles.css
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -1,0 +1,61 @@
+html,body {
+    padding: 0;
+    margin: 0;
+    overflow: hidden;
+}
+
+.main iframe {
+    display: block;
+    position: absolute;
+    border: none;
+    height: 100%;
+    width: 100%;
+}
+
+.chat-window {
+    position: relative;
+    position: fixed;
+    right: 15px;
+    bottom: 15px;
+    border: 2px solid #3a96dd;
+    background: #fff;
+    border-radius: 4px;
+    overflow: hidden;
+    box-shadow: 0 0 50px 0 rgba(58, 150, 221, .6)
+}
+
+.chat-window iframe {
+    display: block;
+    margin-top: -2px;
+    border: none;
+    height: 400px;
+    width: 500px;
+    font-size: 8px;
+}
+
+.chat-window-close {
+    position: absolute;
+    right: 0;
+    top: 0;
+    padding: 8px;
+    color: #fff;
+    cursor: pointer;
+}
+
+.chat-icon {
+    position: fixed;
+    background: #ce1125 url('bot.png') 100%;
+    background-size: 100%;
+    height: 50px;
+    width: 50px;
+    right: 25px;
+    bottom: 25px;
+    border-radius: 50%;
+    box-shadow: 0 0 25px 0 #ce1125;
+    cursor: pointer;
+    transition: box-shadow ease-out .3s;
+}
+
+.chat-icon:hover {
+    box-shadow: 0 0 70px 0 #ce1125;
+}
