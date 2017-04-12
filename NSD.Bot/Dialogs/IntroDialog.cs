@@ -1,12 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Web;
 using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Bot.Connector;
-using Microsoft.Rest;
 
 namespace NSD.Bot.Dialogs
 {
@@ -23,16 +20,15 @@ namespace NSD.Bot.Dialogs
 
         private async Task Resume(IDialogContext context, IAwaitable<IMessageActivity> result)
         {
-            var activity = (Activity)(await result);
+            var activity = (Activity)await result;
 
-            bool sentGreeting;
-            if (!state.TryGetValue(activity.Conversation.Id, out sentGreeting))
+            if (!state.TryGetValue(activity.Conversation.Id, out bool sentGreeting))
             {
                 state[activity.Conversation.Id] = true;
                 await context.PostAsync(embeddedAnswers.intro);
-                context.Call(new RootDialog(), async (dialogContext, res) => dialogContext.Done(await res));
+                context.Done<object>(null);
             }
-            else
+            else if (activity.Type == ActivityTypes.Message)
             {
                 await context.Forward(new RootDialog(), async (dialogContext, res) => dialogContext.Done(await res), activity, CancellationToken.None);
             }
