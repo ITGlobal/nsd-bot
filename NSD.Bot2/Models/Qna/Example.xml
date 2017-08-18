@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Qna xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:noNamespaceSchemaLocation="file:/D:/Projects/nsd-bot/NSD.Bot2/Models/Qna/Qna.xsd">
+    <Section name="name0">
+        <Answer text="text0">
+            <Question>Question0</Question>
+            <Question>Question1</Question>
+        </Answer>
+        <Answer text="text1">
+            <Question>Question2</Question>
+            <Question>Question3</Question>
+        </Answer>
+    </Section>
+    <Section name="name1">
+        <Answer text="text2">
+            <Question>Question4</Question>
+            <Question>Question5</Question>
+        </Answer>
+        <Answer text="text3">
+            <Question>Question6</Question>
+            <Question>Question7</Question>
+        </Answer>
+    </Section>
+</Qna>
