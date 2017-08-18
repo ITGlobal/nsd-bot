@@ -15,7 +15,7 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "HelloBot": {
+    "NSD.Bot2": {
       "commandName": "Project",
       "launchBrowser": true,
       "environmentVariables": {

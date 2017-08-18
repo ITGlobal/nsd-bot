@@ -25,6 +25,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\QnaMaker-RequestCreator\QnAMaker.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Compile Update="embeddedAnswers.Designer.cs">
       <DependentUpon>embeddedAnswers.resx</DependentUpon>
       <DesignTime>True</DesignTime>
