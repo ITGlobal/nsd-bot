@@ -6,12 +6,13 @@ using System.Xml.Serialization;
 using QnaMakerApi;
 using QnaMakerApi.Requests;
 using System.Collections.Generic;
+using NSD.Bot2.Models;
 
 namespace NSD.Bot2.Controllers
 {
     public class AdminController : Controller
     {
-        private IHostingEnvironment hostingEnv;
+        private readonly IHostingEnvironment hostingEnv;
 
         public AdminController(IHostingEnvironment env)
         {
@@ -36,7 +37,7 @@ namespace NSD.Bot2.Controllers
             return new RedirectResult("/success.html");
         }
 
-        static async void MakeRequest(Qna data)
+        async void MakeRequest(Qna data)
         {
             foreach (Section section in data.Section)
             {
@@ -55,6 +56,11 @@ namespace NSD.Bot2.Controllers
                     UpdateActions deleteDefault = new UpdateActions();
                     deleteDefault.QnaPairs.Add(new QnaPair("Hi", "Hello"));
                     await client.UpdateKownledgeBase(result.Guid, null, deleteDefault);
+                    using (var db = new KnowledgeBasesContext())
+                    {
+                        db.KB.Add(new KB(result.Guid, section.name));
+                        var count = db.SaveChanges();
+                    }
                 }
             }
         }

@@ -9,7 +9,10 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.1.1" />
-    <PackageReference Include="Microsoft.Practices.EnterpriseLibrary.Data.dll" Version="3.1.0" />
+    <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="2.0.0" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.0.0" />
     <PackageReference Include="Neon.Bot.Builder" Version="3.8.3.2" />
     <PackageReference Include="Neon.Bot.Builder.Autofac" Version="3.8.3.2" />
     <PackageReference Include="Neon.Bot.Connector" Version="3.8.3.2" />
@@ -25,7 +28,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\QnaMaker-RequestCreator\QnAMaker.csproj" />
+    <Reference Include="QnaMaker">
+      <HintPath>..\QnaMaker-RequestCreator\bin\Debug\QnaMaker.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
   <ItemGroup>

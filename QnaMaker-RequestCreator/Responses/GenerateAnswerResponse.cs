@@ -8,6 +8,9 @@ namespace QnaMakerApi.Responses
         [JsonProperty("answer")]
         public string Answer { get; set; }
 
+        [JsonProperty("questions")]
+        public List<string> Questions { get; set; }
+
         [JsonProperty("score")]
         public float Score { get; set; }
     }
@@ -21,6 +24,6 @@ namespace QnaMakerApi.Responses
         ///     List of answers for the user query sorted in decreasing order of ranking score.
         /// </summary>
         [JsonProperty("answers")]
-        public IList<AnswerItem> Answers { get; set; }
+        public List<AnswerItem> Answers { get; set; } = new List<AnswerItem>();
     }
 }

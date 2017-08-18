@@ -5,6 +5,9 @@ using System.Threading.Tasks;
 using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Bot.Connector;
 using RestSharp;
+using QnaMakerApi;
+using NSD.Bot2.Models;
+using QnaMakerApi.Responses;
 
 namespace NSD.Bot2.Dialogs
 {
@@ -35,8 +38,23 @@ namespace NSD.Bot2.Dialogs
             }
 
             // выполнить полнотекстовый поиск
-            var answers = Search(((IMessageActivity)context.Activity).Text);
-            if (answers[0].Score > 80)
+            var result = SearchAsync(((IMessageActivity)context.Activity).Text).Result;
+            foreach (QnAMakerAnswer kbres in result)
+            {
+                var reply = $"Ответы из базы знаний - {kbres.KB.KBName}:\n\n---\n\n";
+                foreach (var answer in kbres.KnowledgeBaseResult.Answers)
+                {
+                    var score = answer.Score;
+                    if (score >= 25)
+                        reply += $"{answer.Answer}\n\n---\n\n*Релевантность {score:F0}%*";
+                    else
+                        reply += embeddedAnswers.notFound;
+                }
+                await context.PostAsync(reply);
+            }
+            
+            await Done(context);
+            /*if (answers[0].Score > 80)
             {
                 var answer = answers[0].Answer;
                 var score = answers[0].Score;
@@ -54,7 +72,7 @@ namespace NSD.Bot2.Dialogs
                 var reply = activity.CreateReply();
                 reply.AddKeyboardCard("Утоните, пожалуйста", answers.Select(x => x.Questions[0]));
                 await context.PostAsync(reply);
-            }
+            }*/
         }
 
         private static async Task Done(IDialogContext context)
@@ -63,30 +81,37 @@ namespace NSD.Bot2.Dialogs
             context.Done<object>(null);
         }
 
-        private static IList<QnAMakerAnswer> Search(string input)
+        private static async Task<List<QnAMakerAnswer>> SearchAsync(string input)
         {
-            var client = new RestClient("https://westus.api.cognitive.microsoft.com/qnamaker/v2.0");
-            var request = new RestRequest("/knowledgebases/8619aa1d-fe00-4a68-9ffc-0a2a8979bc29/generateAnswer", Method.POST);
-            request.AddHeader("Ocp-Apim-Subscription-Key", "dc6b8b6a65804c21b30ead4225af6f59");
-            request.AddJsonBody(new
+            List<QnAMakerAnswer> result = new List<QnAMakerAnswer>();
+            List<KB> KBs = new List<KB>();
+            using (var db = new KnowledgeBasesContext())
             {
-                question = input,
-                top = 3
-            });
-            var response = client.Execute<QnAMakerResponse>(request);
-            return response.Data.Answers;
+                KBs = db.KB.ToList();
+            }
+
+            foreach (var KB in KBs)
+            { 
+                using (var client = new QnaMakerClient("e6a93449fd254d11a7857b500be15be3"))
+                {
+                    var res = await client.GenerateAnswer(KB.KBId, input, 3);
+                    result.Add(new QnAMakerAnswer(res, KB));
+                }
+            }
+            
+            return result;
         }
-    }
 
-    public class QnAMakerResponse
-    {
-        public List<QnAMakerAnswer> Answers { get; set; }
-    }
+        public class QnAMakerAnswer
+        {
+            public GenerateAnswerResponse KnowledgeBaseResult { get; set; }
+            public KB KB { get; set; }
 
-    public class QnAMakerAnswer
-    {
-        public string Answer { get; set; }
-        public List<string> Questions { get; set; }
-        public double Score { get; set; }
+            public QnAMakerAnswer(GenerateAnswerResponse answers, KB kb)
+            {
+                KnowledgeBaseResult = answers;
+                KB = kb;
+            }
+        }
     }
 }

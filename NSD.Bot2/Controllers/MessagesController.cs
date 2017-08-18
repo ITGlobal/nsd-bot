@@ -6,6 +6,7 @@ using Microsoft.Bot.Connector;
 namespace NSD.Bot2.Controllers
 {
     [BotAuthentication]
+    [Route("api/[controller]")]
     public class MessagesController : Controller
     {
         public async Task Post([FromBody]Activity activity)
