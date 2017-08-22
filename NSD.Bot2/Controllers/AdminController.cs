@@ -7,6 +7,11 @@ using QnaMakerApi;
 using QnaMakerApi.Requests;
 using System.Collections.Generic;
 using NSD.Bot2.Models;
+using System.Threading.Tasks;
+using System.Net.Http.Headers;
+using System.IO;
+using System.Xml.Schema;
+using System.Xml;
 
 namespace NSD.Bot2.Controllers
 {
@@ -19,26 +24,20 @@ namespace NSD.Bot2.Controllers
             this.hostingEnv = env;
         }
 
-        [HttpPost]
-        public IActionResult UploadFiles(IFormFile xmlfile)
-        {
-            if (xmlfile == null)
-            {
-                return new RedirectResult("/fail.html");
-            }
-            Qna data;
-            using (var stream = xmlfile.OpenReadStream())
-            {
-                var serializer = new XmlSerializer(typeof(Qna));
-                data = (Qna)serializer.Deserialize(stream);
-            }
-
-            MakeRequest(data);
-            return new RedirectResult("/success.html");
-        }
-
         async void MakeRequest(Qna data)
         {
+            using (var db = new KnowledgeBasesContext())
+            {
+                using (var client = new QnaMakerClient("e6a93449fd254d11a7857b500be15be3"))
+                {
+                    foreach (var kb in db.KB)
+                    {
+                        await client.DeleteKnowledgeBase(kb.KBId);
+                        db.Remove(kb);
+                    }
+                    var count = db.SaveChanges();
+                }
+            }
             foreach (Section section in data.Section)
             {
                 List<QnaPair> qnapairs = new List<QnaPair>();
@@ -63,6 +62,53 @@ namespace NSD.Bot2.Controllers
                     }
                 }
             }
+        }
+
+
+        [HttpPost]
+        public IActionResult UploadFilesAjax()
+        {
+            var files = Request.Form.Files;
+            foreach (var file in files)
+            {
+                XmlReaderSettings qnaSettings = new XmlReaderSettings();
+                qnaSettings.Schemas.Add(null, "Models/Qna/Qna.xsd");
+                qnaSettings.ValidationType = ValidationType.Schema;
+                qnaSettings.ValidationEventHandler += new ValidationEventHandler(QnaSettingsValidationEventHandler);
+
+                
+                using (var stream = file.OpenReadStream())
+                {
+                    XmlReader qna = XmlReader.Create(stream, qnaSettings);
+                    try
+                    {
+                        while (qna.Read()) { }
+                    }
+                    catch (XmlSchemaValidationException e)
+                    {
+                        return Json(e.Message);
+                    }
+                }
+
+                Qna data;
+                using (var stream = file.OpenReadStream())
+                {
+                    var serializer = new XmlSerializer(typeof(Qna));
+                    data = (Qna)serializer.Deserialize(stream);
+                }
+
+                MakeRequest(data);
+
+            }
+
+            string message = $"Knowledge Database uploaded successfully!";
+            return Json(message);
+        }
+
+        void QnaSettingsValidationEventHandler(object sender, ValidationEventArgs e)
+        {
+            if (e.Severity == XmlSeverityType.Warning || e.Severity == XmlSeverityType.Error)
+                throw new XmlSchemaValidationException(e.Message);
         }
 
     }

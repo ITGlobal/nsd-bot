@@ -24,10 +24,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="wwwroot\index.html" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Reference Include="QnaMaker">
       <HintPath>..\QnaMaker-RequestCreator\bin\Debug\QnaMaker.dll</HintPath>
     </Reference>
