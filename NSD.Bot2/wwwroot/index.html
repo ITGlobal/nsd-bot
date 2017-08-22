@@ -1,0 +1,45 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Загрузка Баз Знаний</title>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js" type="text/javascript"></script>
+</head>
+<body>
+    <form method="post" enctype="multipart/form-data">
+        <input type="file" id="files"
+               name="files" multiple />
+        <input type="button"
+               id="upload"
+               value="Загрузить" />
+    </form>
+    <p id="uploadMessage"></p>
+</body>
+
+</html>
+
+<script>
+    $(document).ready(function () {
+        $("#upload").click(function (evt) {
+            var fileUpload = $("#files").get(0);
+            var files = fileUpload.files;
+            var data = new FormData();
+            for (var i = 0; i < files.length; i++) {
+                data.append(files[i].name, files[i]);
+            }
+            $.ajax({
+                type: "POST",
+                url: "/api/Admin/UploadFilesAjax",
+                contentType: false,
+                processData: false,
+                data: data,
+                success: function (message) {
+                    document.getElementById('uploadMessage').innerHTML = message;
+                },
+                error: function () {
+                    document.getElementById('uploadMessage').innerHTML = "There was error uploading files!";
+                }
+            });
+        });
+    });
+</script>

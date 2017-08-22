@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26403.0
+VisualStudioVersion = 15.0.26730.3
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NSD.Bot", "NSD.Bot\NSD.Bot.csproj", "{A8BA1066-5695-4D71-ABB4-65E5A5E0C3D4}"
 EndProject
@@ -13,6 +13,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "website", "website", "{C5B5
 		docs\scripts.js = docs\scripts.js
 		docs\styles.css = docs\styles.css
 	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NSD.Bot2", "NSD.Bot2\NSD.Bot2.csproj", "{BE263F67-CF80-4981-B49D-5D840F8E4486}"
+	ProjectSection(ProjectDependencies) = postProject
+		{388568FB-B531-40A2-AD21-2D7C0FE18A02} = {388568FB-B531-40A2-AD21-2D7C0FE18A02}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QnAMaker", "QnaMaker-RequestCreator\QnAMaker.csproj", "{388568FB-B531-40A2-AD21-2D7C0FE18A02}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -28,8 +35,19 @@ Global
 		{BE3FCB67-26DF-4B58-B8BC-0DD6887819D8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BE3FCB67-26DF-4B58-B8BC-0DD6887819D8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BE3FCB67-26DF-4B58-B8BC-0DD6887819D8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BE263F67-CF80-4981-B49D-5D840F8E4486}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BE263F67-CF80-4981-B49D-5D840F8E4486}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BE263F67-CF80-4981-B49D-5D840F8E4486}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BE263F67-CF80-4981-B49D-5D840F8E4486}.Release|Any CPU.Build.0 = Release|Any CPU
+		{388568FB-B531-40A2-AD21-2D7C0FE18A02}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{388568FB-B531-40A2-AD21-2D7C0FE18A02}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{388568FB-B531-40A2-AD21-2D7C0FE18A02}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{388568FB-B531-40A2-AD21-2D7C0FE18A02}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {BAAE0BB3-98E0-471F-9E72-98D65B38A561}
 	EndGlobalSection
 EndGlobal

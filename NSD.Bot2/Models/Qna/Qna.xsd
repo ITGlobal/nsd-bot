@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+    <xs:element name="Qna">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="Section" minOccurs="0" maxOccurs="unbounded" />
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="Section">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="Answer" minOccurs="0" maxOccurs="unbounded" />
+            </xs:sequence>
+            <xs:attribute name="name" type="xs:string" />
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="Answer">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="Question" maxOccurs="unbounded" type="xs:string" />
+            </xs:sequence>
+            <xs:attribute name="text" type="xs:string" />
+        </xs:complexType>
+    </xs:element>
+</xs:schema>
